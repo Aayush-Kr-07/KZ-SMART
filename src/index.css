@@ -1,8 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;500;600;700;800&display=swap');
 
 * { box-sizing: border-box; }
-html { min-width: 320px; min-height: 100%; background: #f5f8f6; }
-body { min-width: 320px; min-height: 100vh; margin: 0; font-family: 'Manrope', 'Segoe UI', sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+html, body, #root { width: 100%; max-width: 100%; overflow-x: clip; }
+html { min-height: 100%; background: #f5f8f6; }
+body { min-height: 100vh; margin: 0; font-family: 'Manrope', 'Segoe UI', sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 button { font-family: inherit; }
 input { font-family: inherit; }
 ::selection { color: #1f4d3e; background: #d9ebdd; }

@@ -78,6 +78,16 @@ test('opens on signup without a workspace preview shortcut', async () => {
   expect(screen.queryByRole('button', { name: /workspace preview/i })).not.toBeInTheDocument();
 });
 
+test('restores an existing staff session to the dashboard on app startup', async () => {
+  const existingImplementation = apiRequest.getMockImplementation();
+  apiRequest.mockImplementation((path, options) => path === '/api/auth/me'
+    ? Promise.resolve({ user: { id: 'staff-1', name: 'Aayush', email: 'staff@example.com', school: 'Kid Zone' } })
+    : existingImplementation(path, options));
+  render(<App />);
+  expect(await screen.findByRole('heading', { name: /results overview/i })).toBeInTheDocument();
+  expect(screen.queryByRole('heading', { name: /create your account/i })).not.toBeInTheDocument();
+});
+
 test('switches to login and shows backend authentication errors', async () => {
   render(<App />);
   await screen.findByRole('heading', { name: /create your account/i });

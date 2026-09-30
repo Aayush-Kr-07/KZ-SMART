@@ -12,6 +12,7 @@ const app = express();
 const port = Number(process.env.PORT || 4000);
 const jwtSecret = process.env.JWT_SECRET;
 const cookieName = 'kz_staff_session';
+const productionRuntime = process.env.NODE_ENV === 'production' || Boolean(process.env.RENDER_EXTERNAL_URL);
 const classNames = new Set(['P.G', 'Nursery', 'L.K.G', 'U.K.G', 'Class 1', 'Class 2', 'Class 3']);
 const subjects = ['English', 'Mathematics', 'Science', 'Hindi', 'Social Studies'];
 const resultMarkSubjects = [
@@ -36,8 +37,9 @@ app.get('/', (_req, res) => {
 
 const cookieOptions = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: 'lax',
+  secure: productionRuntime,
+  sameSite: productionRuntime ? 'none' : 'lax',
+  ...(productionRuntime ? { partitioned: true } : {}),
   path: '/',
 };
 

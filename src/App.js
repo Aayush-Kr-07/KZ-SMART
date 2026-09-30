@@ -107,7 +107,7 @@ const sectionAverage = (students, section) =>
       )
     : 0;
 
-function StaffDashboard({ onSignOut }) {
+function StaffDashboard({ onSignOut, schoolName = "School workspace" }) {
   const [students, setStudents] = useState([]);
   const [studentsLoading, setStudentsLoading] = useState(true);
   const [selectedId, setSelectedId] = useState(null);
@@ -392,10 +392,10 @@ function StaffDashboard({ onSignOut }) {
           </span>
         </a>
         <div className="school-switcher">
-          <span className="school-avatar">S</span>
+          <span className="school-avatar">{schoolName.charAt(0).toUpperCase()}</span>
           <span>
-            <b>School name</b>
-            <small>Workspace not connected</small>
+            <b>{schoolName}</b>
+            <small>Guardian portal enabled</small>
           </span>
           <span className="switch-chevron">v</span>
         </div>
@@ -1308,7 +1308,13 @@ function App() {
         <span>Loading account...</span>
       </main>
     );
-  if (user) return <StaffDashboard onSignOut={() => setUser(null)} />;
+  if (user)
+    return (
+      <StaffDashboard
+        onSignOut={() => setUser(null)}
+        schoolName={user.school}
+      />
+    );
   return <AuthPage onAuthenticated={setUser} />;
 }
 

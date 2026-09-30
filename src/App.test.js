@@ -85,6 +85,8 @@ test('restores an existing staff session to the dashboard on app startup', async
     : existingImplementation(path, options));
   render(<App />);
   expect(await screen.findByRole('heading', { name: /results overview/i })).toBeInTheDocument();
+  expect(screen.getByText('Kid Zone')).toBeInTheDocument();
+  expect(screen.getByText('Guardian portal enabled')).toBeInTheDocument();
   expect(screen.queryByRole('heading', { name: /create your account/i })).not.toBeInTheDocument();
 });
 

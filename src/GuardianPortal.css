@@ -203,3 +203,72 @@
   .guardian-report-preview .result-summary b { font-size: 16px; }
   .guardian-report-preview .result-signatures { font-size: 11px; }
 }
+
+.guardian-report-preview .result-preview.result-pdf-export {
+  width: 202mm;
+  height: 286mm;
+  max-width: none;
+  min-height: 0;
+  overflow: hidden;
+  padding: 4mm;
+  font-size: 10pt;
+  font-weight: 600;
+}
+.guardian-report-preview .result-pdf-export .result-chart-section { display: none; }
+.guardian-report-preview .result-pdf-export .result-school-heading { grid-template-columns: 16mm minmax(0, 1fr) 26mm; gap: 2.5mm; padding-bottom: 2mm; }
+.guardian-report-preview .result-pdf-export .result-school-heading img { width: 15mm; height: 15mm; }
+.guardian-report-preview .result-pdf-export .result-school-heading .result-overline { font-size: 7.5pt; font-weight: 800; }
+.guardian-report-preview .result-pdf-export .result-school-heading h2 { font-size: 22pt; font-weight: 800; }
+.guardian-report-preview .result-pdf-export .result-school-heading p { margin-top: .7mm; font-size: 9.5pt; font-weight: 700; }
+.guardian-report-preview .result-pdf-export .result-session { padding: 1.5mm; font-size: 9pt; font-weight: 800; }
+.guardian-report-preview .result-pdf-export .result-title-row { gap: 2mm; padding: 2mm 0 1.5mm; }
+.guardian-report-preview .result-pdf-export .result-title-row h1 { font-size: 18pt; font-weight: 800; }
+.guardian-report-preview .result-pdf-export .result-title-row > span { font-size: 10pt; font-weight: 700; }
+.guardian-report-preview .result-pdf-export .result-student-details > div { min-height: 8mm; padding: 1mm 1.5mm; }
+.guardian-report-preview .result-pdf-export .result-student-details span,
+.guardian-report-preview .result-pdf-export .result-summary span { margin-bottom: .8mm; font-size: 8pt; font-weight: 800; }
+.guardian-report-preview .result-pdf-export .result-student-details b { font-size: 11pt; font-weight: 800; }
+.guardian-report-preview .result-pdf-export .result-section-heading { margin: 1.5mm 0 .6mm; }
+.guardian-report-preview .result-pdf-export .result-section-heading h2 { font-size: 13pt; font-weight: 800; }
+.guardian-report-preview .result-pdf-export .result-section-heading > span { font-size: 8.5pt; font-weight: 700; }
+.guardian-report-preview .result-pdf-export .result-marks-table th,
+.guardian-report-preview .result-pdf-export .result-marks-table td { height: 5.8mm; padding: .4mm 1.6mm; font-size: 11pt; font-weight: 800; line-height: 1.05; }
+.guardian-report-preview .result-pdf-export .result-marks-table th { height: 5mm; padding: .5mm 1.6mm; font-size: 8.5pt; font-weight: 800; }
+.guardian-report-preview .result-pdf-export .result-marks-table thead th { height: 5mm; padding: .5mm 1.6mm; font-size: 8.5pt; font-weight: 800; }
+.guardian-report-preview .result-pdf-export .result-marks-table .result-table-section th { height: 4mm; padding: .3mm 1.6mm; font-size: 8.5pt; font-weight: 800; }
+.guardian-report-preview .result-pdf-export .result-grade-chip { min-width: 9mm; padding: .5mm 1mm; font-size: 9.5pt; font-weight: 800; }
+.guardian-report-preview .result-pdf-export .result-summary { margin-top: 1.5mm; }
+.guardian-report-preview .result-pdf-export .result-summary > div { min-height: 10mm; padding: 1mm 1.5mm; }
+.guardian-report-preview .result-pdf-export .result-summary b { font-size: 14pt; font-weight: 800; }
+.guardian-report-preview .result-pdf-export .result-lower-grid { gap: 2mm; margin-top: 1mm; }
+.guardian-report-preview .result-pdf-export .result-lower-grid .result-section-heading { margin: 1.5mm 0 .7mm; }
+.guardian-report-preview .result-pdf-export .result-lower-grid .result-section-heading h2 { font-size: 10pt; font-weight: 800; }
+.guardian-report-preview .result-pdf-export .result-activity-table th,
+.guardian-report-preview .result-pdf-export .result-activity-table td,
+.guardian-report-preview .result-pdf-export .result-grade-guide th,
+.guardian-report-preview .result-pdf-export .result-grade-guide td { height: 5mm; padding: .4mm 1mm; font-size: 9pt; font-weight: 700; line-height: 1.05; }
+.guardian-report-preview .result-pdf-export .result-grade-guide th { height: 4.5mm; padding: .4mm 1mm; font-size: 8pt !important; font-weight: 800; }
+.guardian-report-preview .result-pdf-export .result-remark { margin-top: 1.5mm; padding: 1.5mm 2mm; }
+.guardian-report-preview .result-pdf-export .result-remark span { font-size: 8pt; font-weight: 800; }
+.guardian-report-preview .result-pdf-export .result-remark b { font-size: 12pt; font-weight: 800; }
+.guardian-report-preview .result-pdf-export .result-signatures { min-height: 9mm; padding: 3mm 2mm 0; font-size: 10pt; font-weight: 800; }
+.guardian-report-preview .result-pdf-export .result-signatures span { padding-top: 1mm; }
+.guardian-report-preview .result-pdf-export .result-footer-note { margin-top: .5mm; font-size: 7.5pt; font-weight: 700; }
+.guardian-report-preview .result-preview:not(.result-pdf-export) .result-school-heading h2 { font-size: 23px; font-weight: 800; }
+.guardian-report-preview .result-preview:not(.result-pdf-export) .result-school-heading p { font-size: 11px; font-weight: 700; }
+.guardian-report-preview .result-preview:not(.result-pdf-export) .result-session { font-size: 10px; font-weight: 800; }
+.guardian-report-preview .result-preview:not(.result-pdf-export) .result-title-row h1 { font-size: 22px; font-weight: 800; }
+.guardian-report-preview .result-preview:not(.result-pdf-export) .result-title-row > span { font-size: 12px; font-weight: 700; }
+.guardian-report-preview .result-preview:not(.result-pdf-export) .result-student-details span,
+.guardian-report-preview .result-preview:not(.result-pdf-export) .result-summary span { font-size: 9px; font-weight: 800; }
+.guardian-report-preview .result-preview:not(.result-pdf-export) .result-student-details b { font-size: 13px; font-weight: 800; }
+.guardian-report-preview .result-preview:not(.result-pdf-export) .result-section-heading h2 { font-size: 16px; font-weight: 800; }
+.guardian-report-preview .result-preview:not(.result-pdf-export) .result-section-heading > span { font-size: 10px; font-weight: 700; }
+.guardian-report-preview .result-preview:not(.result-pdf-export) .result-marks-table th,
+.guardian-report-preview .result-preview:not(.result-pdf-export) .result-marks-table td,
+.guardian-report-preview .result-preview:not(.result-pdf-export) .result-activity-table td,
+.guardian-report-preview .result-preview:not(.result-pdf-export) .result-grade-guide td { font-size: 12px; font-weight: 700; }
+.guardian-report-preview .result-preview:not(.result-pdf-export) .result-marks-table thead th,
+.guardian-report-preview .result-preview:not(.result-pdf-export) .result-table-section th { font-size: 10px; font-weight: 800; }
+.guardian-report-preview .result-preview:not(.result-pdf-export) .result-summary b { font-size: 17px; font-weight: 800; }
+.guardian-report-preview .result-preview:not(.result-pdf-export) .result-remark b { font-size: 16px; font-weight: 800; }

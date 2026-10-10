@@ -374,9 +374,18 @@
   .guardian-report-preview .result-preview:not(.result-pdf-export) .result-marks-table .result-table-section th { font-size: 10px; }
   .guardian-report-preview .result-preview:not(.result-pdf-export) .result-lower-grid { grid-template-columns: minmax(0, 1fr); gap: 9px; }
   .guardian-report-preview .result-preview:not(.result-pdf-export) .result-activity-table,
-  .guardian-report-preview .result-preview:not(.result-pdf-export) .result-grade-guide table { table-layout: fixed; white-space: normal; }
+  .guardian-report-preview .result-preview:not(.result-pdf-export) .result-grade-guide table { width: 100% !important; min-width: 0 !important; max-width: 100% !important; table-layout: fixed; white-space: normal; }
+  .guardian-report-preview .result-preview:not(.result-pdf-export) .result-activity-table td:first-child { width: 78%; }
+  .guardian-report-preview .result-preview:not(.result-pdf-export) .result-activity-table td:last-child { width: 22%; text-align: center; }
+  .guardian-report-preview .result-preview:not(.result-pdf-export) .result-grade-guide th:first-child,
+  .guardian-report-preview .result-preview:not(.result-pdf-export) .result-grade-guide td:first-child { width: 18%; }
+  .guardian-report-preview .result-preview:not(.result-pdf-export) .result-grade-guide th:nth-child(2),
+  .guardian-report-preview .result-preview:not(.result-pdf-export) .result-grade-guide td:nth-child(2) { width: 26%; }
+  .guardian-report-preview .result-preview:not(.result-pdf-export) .result-grade-guide th:last-child,
+  .guardian-report-preview .result-preview:not(.result-pdf-export) .result-grade-guide td:last-child { width: 56%; }
   .guardian-report-preview .result-preview:not(.result-pdf-export) .result-activity-table td,
-  .guardian-report-preview .result-preview:not(.result-pdf-export) .result-grade-guide td { overflow-wrap: anywhere; font-size: 10px; }
+  .guardian-report-preview .result-preview:not(.result-pdf-export) .result-grade-guide th,
+  .guardian-report-preview .result-preview:not(.result-pdf-export) .result-grade-guide td { overflow-wrap: anywhere; white-space: normal; font-size: 10px; }
   .guardian-report-preview .result-preview:not(.result-pdf-export) .result-remark { align-items: start; flex-direction: column; gap: 4px; }
   .guardian-report-preview .result-preview:not(.result-pdf-export) .result-remark b { text-align: left; }
   .guardian-report-preview .result-preview:not(.result-pdf-export) .result-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }

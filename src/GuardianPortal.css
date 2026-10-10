@@ -274,25 +274,25 @@
 .guardian-report-preview .result-preview:not(.result-pdf-export) .result-remark b { font-size: 16px; font-weight: 800; }
 .guardian-report-preview .result-preview:not(.result-pdf-export) .result-marks-table th,
 .guardian-report-preview .result-preview:not(.result-pdf-export) .result-marks-table td { font-size: 14px; font-weight: 750; }
-.guardian-report-preview .result-pdf-export { font-size: 12pt; font-weight: 700; }
-.guardian-report-preview .result-pdf-export .result-school-heading h2 { font-size: 24pt; font-weight: 800; }
-.guardian-report-preview .result-pdf-export .result-school-heading p { font-size: 10pt; font-weight: 750; }
-.guardian-report-preview .result-pdf-export .result-title-row h1 { font-size: 20pt; font-weight: 800; }
-.guardian-report-preview .result-pdf-export .result-title-row > span { font-size: 11pt; font-weight: 750; }
+.guardian-report-preview .result-pdf-export { font-size: 10.5pt; font-weight: 700; }
+.guardian-report-preview .result-pdf-export .result-school-heading h2 { font-size: 20pt; font-weight: 800; }
+.guardian-report-preview .result-pdf-export .result-school-heading p { font-size: 9pt; font-weight: 750; }
+.guardian-report-preview .result-pdf-export .result-title-row h1 { font-size: 16pt; font-weight: 800; }
+.guardian-report-preview .result-pdf-export .result-title-row > span { font-size: 9.5pt; font-weight: 750; }
 .guardian-report-preview .result-pdf-export .result-student-details span,
-.guardian-report-preview .result-pdf-export .result-summary span { font-size: 9pt; font-weight: 800; }
-.guardian-report-preview .result-pdf-export .result-student-details b { font-size: 12pt; font-weight: 800; }
-.guardian-report-preview .result-pdf-export .result-section-heading h2 { font-size: 15pt; font-weight: 800; }
-.guardian-report-preview .result-pdf-export .result-section-heading > span { font-size: 9pt; font-weight: 750; }
+.guardian-report-preview .result-pdf-export .result-summary span { font-size: 8pt; font-weight: 800; }
+.guardian-report-preview .result-pdf-export .result-student-details b { font-size: 10.5pt; font-weight: 800; }
+.guardian-report-preview .result-pdf-export .result-section-heading h2 { font-size: 12pt; font-weight: 800; }
+.guardian-report-preview .result-pdf-export .result-section-heading > span { font-size: 8pt; font-weight: 750; }
 .guardian-report-preview .result-pdf-export .result-marks-table { display: block; width: 100%; min-width: 0; border: 0; }
 .guardian-report-preview .result-pdf-export .result-marks-table thead { display: block; }
 .guardian-report-preview .result-pdf-export .result-marks-table thead tr { display: grid; grid-template-columns: minmax(0, 1fr) 28mm 12mm; }
-.guardian-report-preview .result-pdf-export .result-marks-table thead th { display: block; width: auto; font-size: 10pt; font-weight: 800; }
+.guardian-report-preview .result-pdf-export .result-marks-table thead th { display: block; width: auto; font-size: 8.5pt; font-weight: 800; }
 .guardian-report-preview .result-pdf-export .result-marks-table tbody { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(10, auto); column-gap: 3mm; }
 .guardian-report-preview .result-pdf-export .result-marks-table tbody tr.result-table-section { display: block; }
 .guardian-report-preview .result-pdf-export .result-marks-table tbody tr.result-table-section th { display: block; width: 100%; font-size: 11pt; font-weight: 800; }
-.guardian-report-preview .result-pdf-export .result-marks-table tbody tr:not(.result-table-section) { display: grid; min-height: 7.5mm; grid-template-columns: minmax(0, 1fr) 28mm 12mm; }
-.guardian-report-preview .result-pdf-export .result-marks-table tbody tr:not(.result-table-section) td { display: block; min-width: 0; padding: .8mm 1mm; font-size: 14pt; font-weight: 800; line-height: 1.05; }
+.guardian-report-preview .result-pdf-export .result-marks-table tbody tr:not(.result-table-section) { display: grid; min-height: 6.4mm; grid-template-columns: minmax(0, 1fr) 28mm 12mm; }
+.guardian-report-preview .result-pdf-export .result-marks-table tbody tr:not(.result-table-section) td { display: block; min-width: 0; padding: .5mm 1mm; font-size: 10.5pt; font-weight: 800; line-height: 1.05; }
 .guardian-report-preview .result-pdf-export .result-marks-table tbody tr:not(.result-table-section) td:first-child { overflow-wrap: anywhere; white-space: normal; }
 .guardian-report-preview .result-pdf-export .result-marks-table tbody tr:not(.result-table-section) td:nth-child(2) { white-space: nowrap; }
 .guardian-report-preview .result-pdf-export .result-marks-table tbody tr:not(.result-table-section) td:nth-child(3) { text-align: center; }
@@ -314,13 +314,13 @@
 .guardian-report-preview .result-pdf-export .result-marks-table tbody tr:nth-child(16) { grid-column: 1; grid-row: 9; }
 .guardian-report-preview .result-pdf-export .result-marks-table tbody tr:nth-child(17) { grid-column: 2; grid-row: 9; }
 .guardian-report-preview .result-pdf-export .result-marks-table tbody tr:nth-child(18) { grid-column: 1; grid-row: 10; }
-.guardian-report-preview .result-pdf-export .result-summary b { font-size: 16pt; font-weight: 800; }
+.guardian-report-preview .result-pdf-export .result-summary b { font-size: 13pt; font-weight: 800; }
 .guardian-report-preview .result-pdf-export .result-activity-table td,
-.guardian-report-preview .result-pdf-export .result-grade-guide td { font-size: 10.5pt; font-weight: 750; }
-.guardian-report-preview .result-pdf-export .result-grade-guide th { font-size: 8.5pt !important; font-weight: 800; }
-.guardian-report-preview .result-pdf-export .result-remark b { font-size: 14pt; font-weight: 800; }
-.guardian-report-preview .result-pdf-export .result-signatures { font-size: 12pt; font-weight: 800; }
-.guardian-report-preview .result-pdf-export .result-footer-note { font-size: 9pt; font-weight: 750; }
+.guardian-report-preview .result-pdf-export .result-grade-guide td { font-size: 9pt; font-weight: 750; }
+.guardian-report-preview .result-pdf-export .result-grade-guide th { font-size: 8pt !important; font-weight: 800; }
+.guardian-report-preview .result-pdf-export .result-remark b { font-size: 11pt; font-weight: 800; }
+.guardian-report-preview .result-pdf-export .result-signatures { font-size: 10pt; font-weight: 800; }
+.guardian-report-preview .result-pdf-export .result-footer-note { font-size: 7.5pt; font-weight: 750; }
 @media (max-width: 640px) {
   .guardian-report-section .result-preview:not(.result-pdf-export) { width: 100%; max-width: 100%; padding: 12px; }
   .guardian-report-preview .result-preview:not(.result-pdf-export) .result-school-heading { grid-template-columns: 42px minmax(0, 1fr); gap: 8px; }

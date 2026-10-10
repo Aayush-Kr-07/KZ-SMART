@@ -291,15 +291,9 @@ test('guardian signs in with only the student ID and sees current growth and rep
   const printSpy = jest.spyOn(window, 'print').mockImplementation(() => {});
   await userEvent.click(screen.getByRole('button', { name: /download pdf/i }));
   await waitFor(() => expect(html2pdf).toHaveBeenCalledTimes(1));
-  const clonedDocument = document.implementation.createHTMLDocument();
-  const container = clonedDocument.createElement('div');
-  const report = clonedDocument.createElement('article');
-  report.className = 'result-preview';
-  container.appendChild(report);
-  clonedDocument.body.appendChild(container);
-  prepareGuardianReportPdf(clonedDocument);
-  expect(report.classList.contains('result-pdf-export')).toBe(true);
-  expect(report.parentElement.classList.contains('guardian-report-preview')).toBe(true);
+  const pdfSource = prepareGuardianReportPdf(document.querySelector('.result-preview'));
+  expect(pdfSource.classList.contains('guardian-report-preview')).toBe(true);
+  expect(pdfSource.querySelector('.result-preview').classList.contains('result-pdf-export')).toBe(true);
   expect(printSpy).not.toHaveBeenCalled();
   printSpy.mockRestore();
 });

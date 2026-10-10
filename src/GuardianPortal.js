@@ -8,16 +8,14 @@ function hasSavedResult(student) {
   return student.resultPercentage !== null && student.resultPercentage !== undefined;
 }
 
-export function prepareGuardianReportPdf(clonedDocument) {
-  const report = clonedDocument.querySelector('.result-preview');
+export function prepareGuardianReportPdf(report) {
   if (!report) return;
-  report.classList.add('result-pdf-export');
-  if (!report.closest('.guardian-report-preview')) {
-    const wrapper = clonedDocument.createElement('div');
-    wrapper.className = 'guardian-report-preview';
-    report.parentElement.insertBefore(wrapper, report);
-    wrapper.appendChild(report);
-  }
+  const pdfReport = report.cloneNode(true);
+  pdfReport.classList.add('result-pdf-export');
+  const wrapper = report.ownerDocument.createElement('div');
+  wrapper.className = 'guardian-report-preview';
+  wrapper.appendChild(pdfReport);
+  return wrapper;
 }
 
 export default function GuardianPortal() {
@@ -93,6 +91,10 @@ export default function GuardianPortal() {
     try {
       const pdfModule = await import('html2pdf.js');
       const html2pdf = pdfModule.default || pdfModule;
+      const pdfSource = prepareGuardianReportPdf(
+        reportRef.current.querySelector('.result-preview'),
+      );
+      if (!pdfSource) throw new Error('Report preview is unavailable.');
       const filename = `${student.name}-${student.studentCode}-report-card`
         .replace(/[^a-z0-9.-]+/gi, '-')
         .toLowerCase();
@@ -106,11 +108,10 @@ export default function GuardianPortal() {
           windowHeight: 1600,
           useCORS: true,
           backgroundColor: '#ffffff',
-          onclone: prepareGuardianReportPdf,
         },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
         pagebreak: { mode: [] },
-      }).from(reportRef.current.querySelector('.result-preview')).save();
+      }).from(pdfSource).save();
     } catch (downloadError) {
       setError('The PDF could not be created. Please try again or use Print.');
     } finally {

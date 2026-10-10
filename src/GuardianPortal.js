@@ -8,6 +8,18 @@ function hasSavedResult(student) {
   return student.resultPercentage !== null && student.resultPercentage !== undefined;
 }
 
+export function prepareGuardianReportPdf(clonedDocument) {
+  const report = clonedDocument.querySelector('.result-preview');
+  if (!report) return;
+  report.classList.add('result-pdf-export');
+  if (!report.closest('.guardian-report-preview')) {
+    const wrapper = clonedDocument.createElement('div');
+    wrapper.className = 'guardian-report-preview';
+    report.parentElement.insertBefore(wrapper, report);
+    wrapper.appendChild(report);
+  }
+}
+
 export default function GuardianPortal() {
   const [studentCode, setStudentCode] = useState('');
   const [student, setStudent] = useState(null);
@@ -90,12 +102,11 @@ export default function GuardianPortal() {
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: {
           scale: 2,
+          windowWidth: 1200,
+          windowHeight: 1600,
           useCORS: true,
           backgroundColor: '#ffffff',
-          onclone: (clonedDocument) => {
-            clonedDocument.querySelector('.result-preview')
-              ?.classList.add('result-pdf-export');
-          },
+          onclone: prepareGuardianReportPdf,
         },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
         pagebreak: { mode: [] },

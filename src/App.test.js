@@ -221,6 +221,9 @@ test('offers print and one-click guardian report delivery beside a saved student
   expect(apiRequest).toHaveBeenCalledWith('/api/students/student-print-1/report/send', { method: 'POST' });
   await userEvent.click(screen.getByRole('button', { name: /print jordan lee result/i }));
   await screen.findByRole('heading', { name: /marks input/i });
+  expect(screen.getByText('Principal')).toBeInTheDocument();
+  expect(screen.queryByText('Class Teacher')).not.toBeInTheDocument();
+  expect(screen.queryByText('Parent / Guardian')).not.toBeInTheDocument();
   await waitFor(() => expect(printSpy).toHaveBeenCalledTimes(1));
   printSpy.mockRestore();
 });
@@ -240,6 +243,11 @@ test('reports page displays saved result data and filters pending reports', asyn
   expect(screen.getAllByText('1350.00 / 1500').length).toBeGreaterThan(0);
   expect(screen.getAllByText('90.00%').length).toBeGreaterThan(0);
   expect(screen.getByText('Alex Lee')).toBeInTheDocument();
+  expect(screen.getByText('HALF-YEARLY REPORT CARD')).toBeInTheDocument();
+  expect(screen.getByText('Subject marks graph')).toBeInTheDocument();
+  expect(screen.getByText('Grade & remark guide')).toBeInTheDocument();
+  expect(screen.getByText('Very Good')).toBeInTheDocument();
+  expect(screen.queryByText(/periodic test|notebook|sub enrichment/i)).not.toBeInTheDocument();
   await userEvent.click(screen.getByRole('button', { name: /send to guardian/i }));
   expect(apiRequest).toHaveBeenCalledWith('/api/students/report-saved-1/report/send', { method: 'POST' });
   await userEvent.click(screen.getByRole('button', { name: /print \/ save pdf/i }));

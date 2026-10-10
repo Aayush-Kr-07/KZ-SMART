@@ -146,6 +146,8 @@ button { color: inherit; }
   body { background: white !important; }.sidebar, .main-content, .assistant-fab, .assistant-panel, .toast, .rail-header, .report-selected, .print-button, .share-button, .delivery-note, .nav-backdrop { display: none !important; }
   .app-shell { display: block; min-height: 0; background: white; }.report-rail { display: block; position: static; width: 100%; height: auto; overflow: visible; padding: 0; border: 0; background: white; }.report-card { width: 100%; max-width: 660px; margin: 0 auto; padding: 32px; border: 1px solid #ccd8ce; box-shadow: none; }.report-school b { font-size: 13px; }.report-school>span { font-size: 8px; }.report-crest { width: 44px; height: 44px; font-size: 23px; }.report-title, .report-title b { font-size: 10px; }.report-student { padding: 15px 0; }.report-student span, .report-total span, .report-result span { font-size: 8px; }.report-student b, .report-total b { font-size: 11px; }.report-table-head, .report-subject { min-height: 36px; font-size: 10px; }.report-table-head { font-size: 8px; }.report-subject b, .report-subject i { font-size: 10px; }.report-total { padding: 16px 0; }.report-result { padding: 13px; }.report-result b { font-size: 17px; }.report-signatures { margin-top: 50px; font-size: 10px; }
 }
+.report-signatures { justify-content: flex-end; }
+.report-signatures span { width: 45%; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }

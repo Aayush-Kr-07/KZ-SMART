@@ -890,7 +890,6 @@ function StaffDashboard({ onSignOut, schoolName = "School workspace" }) {
                 </b>
               </div>
               <div className="report-signatures">
-                <span>Class teacher</span>
                 <span>Principal</span>
               </div>
             </div>

@@ -85,13 +85,21 @@ export default function GuardianPortal() {
         .replace(/[^a-z0-9.-]+/gi, '-')
         .toLowerCase();
       await html2pdf().set({
-        margin: 8,
+        margin: 0,
         filename: `${filename}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: '#ffffff',
+          onclone: (clonedDocument) => {
+            clonedDocument.querySelector('.result-preview')
+              ?.classList.add('result-pdf-export');
+          },
+        },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        pagebreak: { mode: ['css', 'legacy'] },
-      }).from(reportRef.current).save();
+        pagebreak: { mode: [] },
+      }).from(reportRef.current.querySelector('.result-preview')).save();
     } catch (downloadError) {
       setError('The PDF could not be created. Please try again or use Print.');
     } finally {

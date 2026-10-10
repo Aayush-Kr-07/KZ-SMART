@@ -57,7 +57,80 @@
 .guardian-report-heading .guardian-eyebrow { margin-bottom: 4px; }
 .guardian-report-actions { display: flex; gap: 7px; }
 .guardian-report-section .result-preview { max-width: 880px; margin: 0 auto; }
-.guardian-report-preview .result-preview { padding: 22px 24px; }
+.guardian-report-preview { break-inside: avoid; page-break-inside: avoid; }
+.guardian-report-preview .result-preview { padding: 22px 24px; break-inside: avoid; page-break-inside: avoid; }
+.guardian-report-preview .result-preview.result-pdf-export { width: 202mm; height: 289mm; max-width: none; min-height: 0; box-sizing: border-box; overflow: hidden; padding: 4mm; }
+.guardian-report-preview .result-pdf-export .result-school-heading { grid-template-columns: 18mm minmax(0, 1fr) 29mm; gap: 3mm; padding-bottom: 2.5mm; }
+.guardian-report-preview .result-pdf-export .result-school-heading img { width: 17mm; height: 17mm; }
+.guardian-report-preview .result-pdf-export .result-school-heading h2 { font-size: 16pt; }
+.guardian-report-preview .result-pdf-export .result-school-heading p { margin-top: 1mm; font-size: 7.5pt; }
+.guardian-report-preview .result-pdf-export .result-school-heading .result-overline { font-size: 6pt; }
+.guardian-report-preview .result-pdf-export .result-session { font-size: 6.5pt; }
+.guardian-report-preview .result-pdf-export .result-title-row { padding: 2.5mm 0 2mm; }
+.guardian-report-preview .result-pdf-export .result-title-row h1 { font-size: 14pt; }
+.guardian-report-preview .result-pdf-export .result-title-row > span { font-size: 7pt; }
+.guardian-report-preview .result-pdf-export .result-student-details > div { min-height: 8mm; padding: 1mm 2mm; }
+.guardian-report-preview .result-pdf-export .result-student-details span,
+.guardian-report-preview .result-pdf-export .result-summary span { margin-bottom: 1mm; font-size: 6pt; }
+.guardian-report-preview .result-pdf-export .result-student-details b { font-size: 8pt; }
+.guardian-report-preview .result-pdf-export .result-section-heading { margin: 1.8mm 0 .7mm; }
+.guardian-report-preview .result-pdf-export .result-section-heading h2 { font-size: 10pt; }
+.guardian-report-preview .result-pdf-export .result-section-heading > span { font-size: 6.5pt; }
+.guardian-report-preview .result-pdf-export .result-marks-table th,
+.guardian-report-preview .result-pdf-export .result-marks-table td { height: 3.6mm; padding: .2mm 1.7mm; font-size: 7pt; line-height: 1; }
+.guardian-report-preview .result-pdf-export .result-marks-table thead th { height: 4mm; padding-top: .3mm; padding-bottom: .3mm; font-size: 6.7pt; }
+.guardian-report-preview .result-pdf-export .result-marks-table .result-table-section th { height: 3.2mm; padding-top: .2mm; padding-bottom: .2mm; font-size: 6.5pt; }
+.guardian-report-preview .result-pdf-export .result-summary { margin-top: 2mm; }
+.guardian-report-preview .result-pdf-export .result-summary > div { min-height: 9mm; padding: 1mm 2mm; }
+.guardian-report-preview .result-pdf-export .result-summary b { font-size: 10pt; }
+.guardian-report-preview .result-pdf-export .result-mark-chart { gap: .6mm 3mm; padding: 1mm 2mm; }
+.guardian-report-preview .result-pdf-export .result-chart-row { grid-template-columns: minmax(0, 1fr) 22mm 7mm; gap: 1mm; }
+.guardian-report-preview .result-pdf-export .result-chart-label,
+.guardian-report-preview .result-pdf-export .result-chart-row > b { font-size: 6.5pt; }
+.guardian-report-preview .result-pdf-export .result-chart-track { height: 1.4mm; }
+.guardian-report-preview .result-pdf-export .result-lower-grid { gap: 2mm; margin-top: .6mm; }
+.guardian-report-preview .result-pdf-export .result-lower-grid .result-section-heading { margin: 1.4mm 0 .6mm; }
+.guardian-report-preview .result-pdf-export .result-lower-grid .result-section-heading h2 { font-size: 8.5pt; }
+.guardian-report-preview .result-pdf-export .result-activity-table th,
+.guardian-report-preview .result-pdf-export .result-activity-table td,
+.guardian-report-preview .result-pdf-export .result-grade-guide th,
+.guardian-report-preview .result-pdf-export .result-grade-guide td { height: 3.2mm; padding: .2mm 1.3mm; font-size: 6pt; line-height: 1; }
+.guardian-report-preview .result-pdf-export .result-remark { margin-top: 1.4mm; padding: 1mm 2.5mm; }
+.guardian-report-preview .result-pdf-export .result-signatures { min-height: 14mm; margin-top: 0; padding: 6mm 2mm 0; font-size: 7pt; }
+.guardian-report-preview .result-pdf-export .result-signatures span { width: 30%; padding-top: 1mm; }
+.guardian-report-preview .result-pdf-export .result-footer-note { margin-top: 1mm; font-size: 5.5pt; }
+.guardian-report-preview .result-preview.result-pdf-export { width: 202mm; height: 285mm; padding: 3mm; }
+.guardian-report-preview .result-pdf-export .result-school-heading { grid-template-columns: 15mm minmax(0, 1fr) 27mm; gap: 2mm; padding-bottom: 1.5mm; }
+.guardian-report-preview .result-pdf-export .result-school-heading img { width: 14mm; height: 14mm; }
+.guardian-report-preview .result-pdf-export .result-school-heading h2 { font-size: 15pt; }
+.guardian-report-preview .result-pdf-export .result-school-heading p { margin-top: .5mm; font-size: 7pt; }
+.guardian-report-preview .result-pdf-export .result-title-row { padding: 1.5mm 0 1mm; }
+.guardian-report-preview .result-pdf-export .result-title-row h1 { font-size: 13pt; }
+.guardian-report-preview .result-pdf-export .result-student-details > div { min-height: 6.5mm; padding: .6mm 1.5mm; }
+.guardian-report-preview .result-pdf-export .result-section-heading { margin: 1.1mm 0 .4mm; }
+.guardian-report-preview .result-pdf-export .result-section-heading h2 { font-size: 9pt; }
+.guardian-report-preview .result-pdf-export .result-marks-table th,
+.guardian-report-preview .result-pdf-export .result-marks-table td { height: 3mm; padding: .1mm 1.4mm; font-size: 6.5pt; line-height: 1; }
+.guardian-report-preview .result-pdf-export .result-marks-table thead th { height: 3.4mm; padding: .2mm 1.4mm; font-size: 6.2pt; }
+.guardian-report-preview .result-pdf-export .result-marks-table .result-table-section th { height: 2.7mm; padding: .1mm 1.4mm; font-size: 6pt; }
+.guardian-report-preview .result-pdf-export .result-summary { margin-top: 1mm; }
+.guardian-report-preview .result-pdf-export .result-summary > div { min-height: 7mm; padding: .5mm 1.5mm; }
+.guardian-report-preview .result-pdf-export .result-summary b { font-size: 9pt; }
+.guardian-report-preview .result-pdf-export .result-mark-chart { gap: .3mm 2mm; padding: .5mm 1.5mm; }
+.guardian-report-preview .result-pdf-export .result-chart-row { grid-template-columns: minmax(0, 1fr) 19mm 6mm; gap: .7mm; }
+.guardian-report-preview .result-pdf-export .result-chart-label,
+.guardian-report-preview .result-pdf-export .result-chart-row > b { font-size: 6pt; }
+.guardian-report-preview .result-pdf-export .result-chart-track { height: 1.1mm; }
+.guardian-report-preview .result-pdf-export .result-lower-grid { gap: 1.5mm; margin-top: .3mm; }
+.guardian-report-preview .result-pdf-export .result-lower-grid .result-section-heading { margin: .8mm 0 .3mm; }
+.guardian-report-preview .result-pdf-export .result-activity-table th,
+.guardian-report-preview .result-pdf-export .result-activity-table td,
+.guardian-report-preview .result-pdf-export .result-grade-guide th,
+.guardian-report-preview .result-pdf-export .result-grade-guide td { height: 2.7mm; padding: .1mm 1mm; font-size: 5.5pt; line-height: 1; }
+.guardian-report-preview .result-pdf-export .result-remark { margin-top: .8mm; padding: .6mm 2mm; }
+.guardian-report-preview .result-pdf-export .result-signatures { min-height: 9mm; padding: 3.5mm 2mm 0; font-size: 6.5pt; }
+.guardian-report-preview .result-pdf-export .result-signatures span { padding-top: .7mm; }
+.guardian-report-preview .result-pdf-export .result-footer-note { margin-top: .5mm; font-size: 5pt; }
 .guardian-report-preview .result-school-heading { grid-template-columns: 58px 1fr auto; gap: 14px; padding-bottom: 14px; }
 .guardian-report-preview .result-school-heading img { width: 54px; height: 54px; }
 .guardian-report-preview .result-school-heading h2 { font-size: 19px; }

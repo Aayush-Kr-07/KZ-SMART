@@ -41,14 +41,71 @@ function GradeSection({ section, grades, onChange }) {
 }
 
 export function StudentResult({ student, draft, totalMarks, percentage, enteredCount, complete }) {
+  const safePercentage = Number.isFinite(Number(percentage)) ? Number(percentage) : 0;
+  const totalOutOf = MARK_SUBJECTS.length * 100;
+  const overallGrade = safePercentage >= 90 ? 'A+' : safePercentage >= 80 ? 'A' : safePercentage >= 70 ? 'B' : safePercentage >= 60 ? 'C' : safePercentage >= 40 ? 'D' : 'E';
+  const overallRemark = safePercentage >= 90 ? 'Outstanding' : safePercentage >= 80 ? 'Very Good' : safePercentage >= 70 ? 'Good' : safePercentage >= 60 ? 'Satisfactory' : safePercentage >= 40 ? 'Needs Improvement' : 'Needs Support';
+  const gradeBands = [
+    { grade: 'A+', range: '90-100%', remark: 'Outstanding' },
+    { grade: 'A', range: '80-89%', remark: 'Very Good' },
+    { grade: 'B', range: '70-79%', remark: 'Good' },
+    { grade: 'C', range: '60-69%', remark: 'Satisfactory' },
+    { grade: 'D', range: '40-59%', remark: 'Needs Improvement' },
+    { grade: 'E', range: '0-39%', remark: 'Needs Support' },
+  ];
+
   return <article className="result-preview" aria-label="Student result preview">
-    <header className="result-school-heading"><img src={SCHOOL_LOGO} alt="Kid Zone Public School logo" /><div><h2>KID ZONE PUBLIC SCHOOL</h2><p>STUDENT ACADEMIC RESULT</p></div><span className="result-session">EXAM RESULT</span></header>
+    <header className="result-school-heading">
+      <img src={SCHOOL_LOGO} alt="Kid Zone Public School logo" />
+      <div><p className="result-overline">KZ ONLINE RESULT SYSTEM</p><h2>{student?.schoolName || 'KID ZONE PUBLIC SCHOOL'}</h2><p>STUDENT ACADEMIC RECORD</p></div>
+      <span className="result-session">HALF-YEARLY<br />EXAMINATION</span>
+    </header>
     {student && draft ? <>
-      <section className="result-student-details"><div><span>STUDENT NAME</span><b>{student.name}</b></div><div><span>STUDENT ID</span><b>{student.studentCode}</b></div><div><span>CLASS</span><b>{student.className}</b></div><div><span>FATHER'S NAME</span><b>{draft.fatherName || 'Not provided'}</b></div><div><span>MOTHER'S NAME</span><b>{draft.motherName || 'Not provided'}</b></div><div><span>RESULT STATUS</span><b>{complete ? 'Complete' : 'In progress'}</b></div></section>
-      <div className="result-subject-grid">{MARK_SECTIONS.map((section) => <section className="result-subject-section" key={section.title}><h3>{section.title}</h3>{section.subjects.map((subject) => <div className="result-subject-row" key={subject}><span>{subject}</span><b>{draft.marks[subject] === '' ? '--' : `${draft.marks[subject]} / 100`}</b></div>)}</section>)}</div>
-      <div className="result-grade-grid">{GRADE_SECTIONS.map((section) => <section className="result-subject-section" key={section.title}><h3>{section.title}</h3>{section.subjects.map((subject) => <div className="result-subject-row" key={subject}><span>{subject}</span><b>{draft.grades[subject] || '--'}</b></div>)}</section>)}</div>
-      <section className="result-summary"><div><span>TOTAL MARKS</span><b>{totalMarks.toFixed(2)} / 1500</b></div><div><span>MARKS ENTERED</span><b>{enteredCount} / 15</b></div><div><span>PERCENTAGE</span><b>{enteredCount ? `${percentage.toFixed(2)}%` : '--'}</b></div></section>
-      <footer className="result-signatures"><span>Class Teacher</span><span>Principal</span></footer>
+      <div className="result-title-row"><h1>HALF-YEARLY REPORT CARD</h1><span>{student.examName || 'Academic Progress Report'}</span></div>
+      <section className="result-student-details" aria-label="Student details">
+        <div><span>STUDENT NAME</span><b>{student.name}</b></div><div><span>STUDENT ID</span><b>{student.studentCode}</b></div><div><span>CLASS</span><b>{student.className}</b></div>
+        <div><span>FATHER / GUARDIAN</span><b>{draft.fatherName || '—'}</b></div><div><span>MOTHER / GUARDIAN</span><b>{draft.motherName || '—'}</b></div><div><span>RESULT</span><b className={complete ? 'result-ready' : ''}>{complete ? 'Complete' : 'In progress'}</b></div>
+      </section>
+
+      <section className="result-section-block">
+        <div className="result-section-heading"><h2>Scholastic performance</h2><span>Maximum {totalOutOf} marks</span></div>
+        <table className="result-marks-table"><thead><tr><th>SUBJECT</th><th>MARKS</th><th>GRADE</th></tr></thead><tbody>
+          {MARK_SECTIONS.map((section) => <React.Fragment key={section.title}><tr className="result-table-section"><th colSpan="3">{section.title}</th></tr>{section.subjects.map((subject) => {
+            const rawMark = draft.marks[subject];
+            const mark = rawMark === '' || rawMark === null || rawMark === undefined ? null : Number(rawMark);
+            const grade = mark === null || !Number.isFinite(mark) ? '—' : mark >= 90 ? 'A+' : mark >= 80 ? 'A' : mark >= 70 ? 'B' : mark >= 60 ? 'C' : mark >= 40 ? 'D' : 'E';
+            return <tr key={subject}><td>{subject}</td><td>{mark === null || !Number.isFinite(mark) ? '—' : `${mark.toFixed(2)} / 100`}</td><td><span className="result-grade-chip">{grade}</span></td></tr>;
+          })}</React.Fragment>)}
+        </tbody></table>
+      </section>
+
+      <section className="result-summary" aria-label="Overall result">
+        <div><span>TOTAL MARKS</span><b>{Number(totalMarks || 0).toFixed(2)} / {totalOutOf}</b></div>
+        <div><span>MARKS ENTERED</span><b>{enteredCount} / {MARK_SUBJECTS.length}</b></div>
+        <div><span>OVERALL PERCENTAGE</span><b>{complete ? `${safePercentage.toFixed(2)}%` : '—'}</b></div>
+        <div><span>OVERALL GRADE</span><b>{complete ? overallGrade : '—'}</b></div>
+      </section>
+
+      <section className="result-chart-section">
+        <div className="result-section-heading"><h2>Subject marks graph</h2><span>Individual marks out of 100</span></div>
+        <div className="result-mark-chart" role="img" aria-label="Horizontal bar chart showing the student's marks for each subject">
+          {MARK_SECTIONS.flatMap((section) => section.subjects).map((subject) => {
+            const rawMark = draft.marks[subject];
+            const mark = rawMark === '' || rawMark === null || rawMark === undefined ? null : Number(rawMark);
+            const value = mark === null || !Number.isFinite(mark) ? 0 : Math.max(0, Math.min(100, mark));
+            return <div className="result-chart-row" key={subject}><span className="result-chart-label">{subject}</span><span className="result-chart-track"><span style={{ width: `${value}%` }} /></span><b>{mark === null || !Number.isFinite(mark) ? '—' : mark.toFixed(0)}</b></div>;
+          })}
+        </div>
+      </section>
+
+      <div className="result-lower-grid">
+        <section className="result-co-scholastic"><div className="result-section-heading"><h2>Co-scholastic & discipline</h2><span>Grades</span></div><table className="result-activity-table"><tbody>{GRADE_SECTIONS.map((section) => <React.Fragment key={section.title}><tr className="result-table-section"><th colSpan="2">{section.title}</th></tr>{section.subjects.map((subject) => <tr key={subject}><td>{subject}</td><td><span className="result-grade-chip">{draft.grades[subject] || '—'}</span></td></tr>)}</React.Fragment>)}</tbody></table></section>
+        <section className="result-grade-guide"><div className="result-section-heading"><h2>Grade & remark guide</h2></div><table><thead><tr><th>GRADE</th><th>PERCENTAGE</th><th>REMARK</th></tr></thead><tbody>{gradeBands.map((band) => <tr key={band.grade}><td><b>{band.grade}</b></td><td>{band.range}</td><td>{band.remark}</td></tr>)}</tbody></table></section>
+      </div>
+
+      <section className="result-remark"><span>TEACHER'S REMARK</span><b>{complete ? overallRemark : 'Complete all subject marks to calculate the overall remark.'}</b></section>
+      <footer className="result-signatures"><span>Principal</span></footer>
+      <div className="result-footer-note">Generated from the school's saved examination record · Student ID: {student.studentCode}</div>
     </> : <div className="result-empty"><span>RESULT PREVIEW</span><p>Select a class and student to start a result card.</p></div>}
   </article>;
 }

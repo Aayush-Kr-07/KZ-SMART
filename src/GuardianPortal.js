@@ -250,6 +250,7 @@ export default function GuardianPortal() {
           percentage={currentPercentage}
           enteredCount={15}
           complete
+          showStudentPhoto
         /></div> : <div className="guardian-report-pending">Your report card will appear here as soon as the school saves a complete result.</div>}
       </section>
       {error && <p className="guardian-refresh-error" role="status">{error}</p>}

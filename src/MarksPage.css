@@ -125,6 +125,8 @@
 .result-remark b { color: #357348; font-family: 'DM Serif Display', Georgia, serif; font-size: 13px; font-weight: 400; text-align: right; }
 .result-signatures { justify-content: flex-end; gap: 20px; margin-top: 0; padding: 27px 10px 0; border: 0; color: #53685e; font-size: 8px; }
 .result-signatures span { width: 30%; padding-top: 5px; border-top: 1px solid #9aaca1; text-align: center; }
+.result-signatures { flex-direction: column; align-items: flex-end; gap: 0; }
+.result-signatures .principal-signature { display: block; width: 42mm; height: 12mm; margin: 0 0 .5mm; object-fit: contain; object-position: center bottom; }
 .result-footer-note { margin-top: 11px; color: #8a9a91; font-size: 7px; text-align: center; }
 .marks-empty { padding: 28px 12px; color: #829087; font-size: 10px; text-align: center; }
 .marks-empty button { padding: 0; border: 0; background: transparent; color: #357358; font: inherit; font-weight: 750; cursor: pointer; }
@@ -211,6 +213,7 @@
   .result-remark span { font-size: 6pt; }
   .result-remark b { font-size: 10pt; }
   .result-signatures { display: flex; min-height: 9mm; align-items: end; justify-content: flex-end; margin-top: 0; padding: 3.5mm 2mm 0; font-size: 6.5pt; }
+  .result-signatures .principal-signature { width: 42mm; height: 12mm; margin-bottom: .5mm; }
   .result-signatures span { display: block; visibility: visible !important; width: 30%; padding-top: .7mm; border-top: .25mm solid #71867c; }
   .result-footer-note { margin-top: .5mm; font-size: 5pt; }
 }

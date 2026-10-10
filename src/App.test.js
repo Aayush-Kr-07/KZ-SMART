@@ -268,6 +268,7 @@ test('guardian signs in with only the student ID and sees current growth and rep
     name: 'Jordan Lee',
     studentCode: 'kzps.001',
     className: 'Class 2',
+    photoUrl: 'https://example.com/jordan.jpg',
     fatherName: 'Alex Lee',
     motherName: 'Taylor Lee',
     resultMarks: Object.fromEntries(markSubjects.map((subject) => [subject, 90])),
@@ -287,6 +288,8 @@ test('guardian signs in with only the student ID and sees current growth and rep
   expect(screen.getAllByText('kzps.001').length).toBeGreaterThan(0);
   expect(screen.getByText('+18.00 pts')).toBeInTheDocument();
   expect(screen.getAllByText('90.00%').length).toBeGreaterThan(0);
+  expect(screen.getByLabelText(/student photo/i).querySelector('img')).toHaveAttribute('src', 'https://example.com/jordan.jpg');
+  expect(screen.getByRole('img', { name: /principal signature/i })).toHaveAttribute('src', '/principal-signature.png');
   expect(apiRequest).toHaveBeenCalledWith('/api/guardian/login', expect.objectContaining({ method: 'POST' }));
   const printSpy = jest.spyOn(window, 'print').mockImplementation(() => {});
   await userEvent.click(screen.getByRole('button', { name: /download pdf/i }));

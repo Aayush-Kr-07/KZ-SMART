@@ -40,7 +40,7 @@ function GradeSection({ section, grades, onChange }) {
   </div></section>;
 }
 
-export function StudentResult({ student, draft, totalMarks, percentage, enteredCount, complete }) {
+export function StudentResult({ student, draft, totalMarks, percentage, enteredCount, complete, showStudentPhoto = false }) {
   const safePercentage = Number.isFinite(Number(percentage)) ? Number(percentage) : 0;
   const totalOutOf = MARK_SUBJECTS.length * 100;
   const overallGrade = safePercentage >= 90 ? 'A+' : safePercentage >= 80 ? 'A' : safePercentage >= 70 ? 'B' : safePercentage >= 60 ? 'C' : safePercentage >= 40 ? 'D' : 'E';
@@ -65,6 +65,7 @@ export function StudentResult({ student, draft, totalMarks, percentage, enteredC
       <section className="result-student-details" aria-label="Student details">
         <div><span>STUDENT NAME</span><b>{student.name}</b></div><div><span>STUDENT ID</span><b>{student.studentCode}</b></div><div><span>CLASS</span><b>{student.className}</b></div>
         <div><span>FATHER / GUARDIAN</span><b>{draft.fatherName || '—'}</b></div><div><span>MOTHER / GUARDIAN</span><b>{draft.motherName || '—'}</b></div><div><span>RESULT</span><b className={complete ? 'result-ready' : ''}>{complete ? 'Complete' : 'In progress'}</b></div>
+        {showStudentPhoto && <div className="result-student-photo" aria-label="Student photo">{student.photoUrl ? <img src={student.photoUrl} alt={`${student.name}`} /> : <span>STUDENT PHOTO</span>}</div>}
       </section>
 
       <section className="result-section-block">
@@ -104,7 +105,7 @@ export function StudentResult({ student, draft, totalMarks, percentage, enteredC
       </div>
 
       <section className="result-remark"><span>TEACHER'S REMARK</span><b>{complete ? overallRemark : 'Complete all subject marks to calculate the overall remark.'}</b></section>
-      <footer className="result-signatures"><span>Principal</span></footer>
+      <footer className="result-signatures"><img className="principal-signature" src={`${process.env.PUBLIC_URL}/principal-signature.png`} alt="Principal signature" /><span>Principal</span></footer>
       <div className="result-footer-note">Generated from the school's saved examination record · Student ID: {student.studentCode}</div>
     </> : <div className="result-empty"><span>RESULT PREVIEW</span><p>Select a class and student to start a result card.</p></div>}
   </article>;

@@ -43,14 +43,6 @@ const RESULT_SECTIONS = [
 const RESULT_MARK_SUBJECTS = RESULT_SECTIONS.flatMap(
   (section) => section.subjects,
 );
-const RESULT_GRADE_SUBJECTS = [
-  "Work Education",
-  "Art & Craft",
-  "Health & Physical Education",
-  "Behaviour",
-  "Neatness",
-  "Punctuality",
-];
 const CLASSES = [
   "P.G",
   "Nursery",
@@ -79,33 +71,30 @@ const totalFor = (student) =>
   );
 const averageFor = (student) => Number(student.resultPercentage);
 const hasMarks = (student) =>
-  RESULT_MARK_SUBJECTS.every(
+  RESULT_MARK_SUBJECTS.some(
     (subject) =>
       student.resultMarks?.[subject] !== "" &&
       student.resultMarks?.[subject] !== null &&
+      student.resultMarks?.[subject] !== undefined &&
       Number.isFinite(Number(student.resultMarks?.[subject])),
-  ) &&
-  RESULT_GRADE_SUBJECTS.every((subject) =>
-    Boolean(student.resultGrades?.[subject]),
   ) &&
   student.resultPercentage !== null &&
   student.resultPercentage !== undefined;
 const sectionAverage = (students, section) =>
-  students.length
-    ? Math.round(
-        students.reduce(
-          (sum, student) =>
-            sum +
-            section.subjects.reduce(
-              (sectionTotal, subject) =>
-                sectionTotal + Number(student.resultMarks[subject]),
-              0,
-            ) /
-              section.subjects.length,
-          0,
-        ) / students.length,
-      )
-    : 0;
+  (() => {
+    const averages = students
+      .map((student) => {
+        const marks = section.subjects
+          .map((subject) => student.resultMarks?.[subject])
+          .filter((mark) => mark !== '' && mark !== null && mark !== undefined && Number.isFinite(Number(mark)))
+          .map(Number);
+        return marks.length ? marks.reduce((sum, mark) => sum + mark, 0) / marks.length : null;
+      })
+      .filter((average) => average !== null);
+    return averages.length
+      ? Math.round(averages.reduce((sum, average) => sum + average, 0) / averages.length)
+      : 0;
+  })();
 
 function StaffDashboard({ onSignOut, schoolName = "School workspace" }) {
   const [students, setStudents] = useState([]);

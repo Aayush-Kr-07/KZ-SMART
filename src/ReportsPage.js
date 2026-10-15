@@ -1,14 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { StudentResult } from './MarksPage';
+import { countEnteredMarks, StudentResult } from './MarksPage';
 import SCHOOL_LOGO from './schoolLogo';
 import './ReportsPage.css';
 
 const CLASSES = ['P.G', 'Nursery', 'L.K.G', 'U.K.G', 'Class 1', 'Class 2', 'Class 3'];
 const MARK_SUBJECTS = ['English Rhymes', 'English Reading', 'English Conversation', 'English Handwriting', 'English Written', 'Hindi Rhymes', 'Hindi Reading', 'Hindi Conversation', 'Hindi Handwriting', 'Hindi Written', 'Maths', 'EVS', 'Computer', 'General Knowledge', 'Drawing'];
 const GRADE_SUBJECTS = ['Work Education', 'Art & Craft', 'Health & Physical Education', 'Behaviour', 'Neatness', 'Punctuality'];
-const isSaved = (student) => MARK_SUBJECTS.every((subject) => student.resultMarks?.[subject] !== undefined && Number.isFinite(Number(student.resultMarks[subject])))
-  && GRADE_SUBJECTS.every((subject) => Boolean(student.resultGrades?.[subject]))
+const isSaved = (student) => countEnteredMarks(student.resultMarks) > 0
   && student.resultPercentage !== null && student.resultPercentage !== undefined;
+const isComplete = (student) => countEnteredMarks(student.resultMarks) === MARK_SUBJECTS.length
+  && GRADE_SUBJECTS.every((subject) => Boolean(student.resultGrades?.[subject]));
 const gradeFor = (percentage) => percentage >= 90 ? 'A+' : percentage >= 80 ? 'A' : percentage >= 70 ? 'B' : percentage >= 60 ? 'C' : percentage >= 40 ? 'D' : 'E';
 
 function reportDraft(student) {
@@ -58,7 +59,7 @@ export default function ReportsPage({ students, loading, onNavigate, onSignOut, 
               const complete = isSaved(student);
               return <tr key={student.id} className={selectedId === student.id ? 'selected' : ''}>
                 <td><button className="report-student-select" onClick={() => setSelectedId(student.id)}><span className="report-student-avatar">{student.photoUrl ? <img src={student.photoUrl} alt="" /> : student.name.split(' ').map((part) => part[0]).slice(0, 2).join('').toUpperCase()}</span><span><b>{student.name}</b><small>{student.studentCode}</small></span></button></td>
-                <td>{student.className}</td><td>{complete ? `${Number(student.resultTotal).toFixed(2)} / 1500` : '--'}</td><td className="report-percentage">{complete ? `${Number(student.resultPercentage).toFixed(2)}%` : '--'}</td><td>{complete ? gradeFor(Number(student.resultPercentage)) : '--'}</td><td><span className={`report-status ${complete ? 'saved' : 'pending'}`}>{complete ? 'Result saved' : 'Marks pending'}</span></td>
+                <td>{complete ? `${Number(student.resultTotal).toFixed(2)} / ${countEnteredMarks(student.resultMarks) * 100}` : '--'}</td><td className="report-percentage">{complete ? `${Number(student.resultPercentage).toFixed(2)}%` : '--'}</td><td>{complete ? gradeFor(Number(student.resultPercentage)) : '--'}</td><td><span className={`report-status ${complete ? 'saved' : 'pending'}`}>{complete ? 'Result saved' : 'Marks pending'}</span></td>
               </tr>;
             })}
           </tbody></table>{!filteredStudents.length && <p className="reports-empty">{loading ? 'Loading report records...' : students.length ? 'No reports match these filters.' : 'No students are on the roster yet.'}</p>}</div>
@@ -67,9 +68,9 @@ export default function ReportsPage({ students, loading, onNavigate, onSignOut, 
         <aside className="reports-preview-panel"><div className="reports-preview-heading"><div><p className="reports-kicker">SAVED RECORD PREVIEW</p><h2>{selected?.name || 'Select a student'}</h2><p>{selected ? `${selected.className} · ${selected.studentCode}` : 'Choose a student record to preview.'}</p></div></div>
           {selectedSaved ? <>
             {selected.resultUpdatedAt && <p className="report-last-saved">Last saved {new Date(selected.resultUpdatedAt).toLocaleDateString()}</p>}
-            <StudentResult student={selected} draft={reportDraft(selected)} totalMarks={Number(selected.resultTotal)} percentage={Number(selected.resultPercentage)} enteredCount={MARK_SUBJECTS.length} complete />
+            <StudentResult student={selected} draft={reportDraft(selected)} totalMarks={Number(selected.resultTotal)} percentage={Number(selected.resultPercentage)} enteredCount={countEnteredMarks(selected.resultMarks)} complete={isComplete(selected)} />
             <div className="reports-preview-actions"><button className="reports-primary" onClick={() => window.print()}>Print / Save PDF</button><button className="reports-secondary" disabled={!selected.parent || sendingId === selected.id} title={!selected.parent ? 'Add a guardian email in the student record first' : 'Email the saved report card to the guardian'} onClick={() => sendReport(selected)}>{sendingId === selected.id ? 'Sending...' : 'Send to guardian'}</button></div>
-          </> : <div className="reports-pending-preview">{selected ? <><b>Marks pending</b><span>This student does not have a complete saved result yet.</span><button className="reports-secondary" onClick={() => onNavigate('Marks Input')}>Enter marks</button></> : <span>Select a student from the report records.</span>}</div>}
+          </> : <div className="reports-pending-preview">{selected ? <><b>Marks pending</b><span>No result has been saved for this student yet.</span><button className="reports-secondary" onClick={() => onNavigate('Marks Input')}>Enter marks</button></> : <span>Select a student from the report records.</span>}</div>}
         </aside>
       </div>
     </div>

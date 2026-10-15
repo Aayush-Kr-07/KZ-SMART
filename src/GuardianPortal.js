@@ -1,12 +1,16 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { apiRequest } from './api';
 import SCHOOL_LOGO from './schoolLogo';
-import { StudentResult } from './MarksPage';
+import { countEnteredMarks, StudentResult } from './MarksPage';
 import './GuardianPortal.css';
 
 function hasSavedResult(student) {
-  return student.resultPercentage !== null && student.resultPercentage !== undefined;
+  return countEnteredMarks(student.resultMarks) > 0
+    && student.resultPercentage !== null
+    && student.resultPercentage !== undefined;
 }
+
+const GRADE_SUBJECTS = ['Work Education', 'Art & Craft', 'Health & Physical Education', 'Behaviour', 'Neatness', 'Punctuality'];
 
 export function prepareGuardianReportPdf(report) {
   if (!report) return;
@@ -141,6 +145,8 @@ export default function GuardianPortal() {
   };
 
   const saved = student && hasSavedResult(student);
+  const enteredCount = saved ? countEnteredMarks(student.resultMarks) : 0;
+  const complete = saved && enteredCount === 15 && GRADE_SUBJECTS.every((subject) => Boolean(student.resultGrades?.[subject]));
   const currentPercentage = saved ? Number(student.resultPercentage) : 0;
   const previousPercentage = student?.previousResultPercentage;
   const growth = saved && previousPercentage !== null && previousPercentage !== undefined
@@ -248,10 +254,10 @@ export default function GuardianPortal() {
           draft={resultDraft}
           totalMarks={Number(student.resultTotal)}
           percentage={currentPercentage}
-          enteredCount={15}
-          complete
+          enteredCount={enteredCount}
+          complete={complete}
           showStudentPhoto
-        /></div> : <div className="guardian-report-pending">Your report card will appear here as soon as the school saves a complete result.</div>}
+        /></div> : <div className="guardian-report-pending">Your report card will appear here as soon as the school saves a result.</div>}
       </section>
       {error && <p className="guardian-refresh-error" role="status">{error}</p>}
       <footer className="guardian-footer"><span>{student.schoolName}</span><span>STUDENT ID · {student.studentCode}</span></footer>

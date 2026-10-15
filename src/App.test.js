@@ -62,8 +62,11 @@ beforeEach(() => {
     if (path.endsWith('/result') && options.method === 'PUT') {
       const studentId = path.split('/')[3];
       const result = JSON.parse(options.body);
-      testStudents = testStudents.map((student) => student.id === studentId ? { ...student, fatherName: result.fatherName, motherName: result.motherName, resultMarks: result.marks, resultGrades: result.grades, resultTotal: 1350, resultPercentage: 90, status: 'Result saved' } : student);
-      return { saved: true, totalMarks: 1350, percentage: 90 };
+      const enteredMarks = Object.values(result.marks).filter((mark) => mark !== '').map(Number);
+      const totalMarks = enteredMarks.reduce((total, mark) => total + mark, 0);
+      const percentage = totalMarks / (enteredMarks.length * 100) * 100;
+      testStudents = testStudents.map((student) => student.id === studentId ? { ...student, fatherName: result.fatherName, motherName: result.motherName, resultMarks: result.marks, resultGrades: result.grades, resultTotal: totalMarks, resultPercentage: percentage, status: 'Result saved' } : student);
+      return { saved: true, totalMarks, percentage };
     }
     throw new Error(`Unexpected API request: ${path}`);
   });
@@ -169,6 +172,44 @@ test('adds a roster student, then saves a complete marks input result', async ()
   expect(screen.getByText('Results saved').parentElement.querySelector('.metric-value')).toHaveTextContent('1 / 1');
   expect(screen.getAllByText('90.00%').length).toBeGreaterThan(0);
   expect(screen.getByText('Result saved', { selector: '.status' })).toBeInTheDocument();
+}, 20000);
+
+test('saves and reports only marks that were entered', async () => {
+  testStudents = [{
+    id: 'partial-result-1',
+    name: 'Jordan Lee',
+    studentCode: 'KZ-1001',
+    className: 'Class 2',
+    parent: '',
+    marks: {},
+    resultMarks: {},
+    resultGrades: {},
+    resultTotal: null,
+    resultPercentage: null,
+    status: 'Marks pending',
+  }];
+  render(<StaffDashboard onSignOut={jest.fn()} />);
+  await userEvent.click(screen.getByRole('button', { name: /marks input/i }));
+  await userEvent.selectOptions(screen.getByLabelText(/^class$/i), 'Class 2');
+  await userEvent.selectOptions(screen.getByLabelText(/^student$/i), 'partial-result-1');
+  const englishReading = screen.getByLabelText('English Reading marks');
+  expect(englishReading).not.toBeRequired();
+  await userEvent.type(englishReading, '80');
+  for (const subject of ['Work Education', 'Art & Craft', 'Health & Physical Education', 'Behaviour', 'Neatness', 'Punctuality']) {
+    await userEvent.selectOptions(screen.getByLabelText(`${subject} grade`), 'A');
+  }
+  expect(screen.getByText(/Current percentage/).closest('span')).toHaveTextContent('80.00%');
+  await userEvent.click(screen.getByRole('button', { name: /save result/i }));
+  await waitFor(() => expect(apiRequest).toHaveBeenCalledWith('/api/students/partial-result-1/result', expect.objectContaining({ method: 'PUT' })));
+  const saveRequest = apiRequest.mock.calls.find(([path]) => path.endsWith('/result'));
+  const savedMarks = JSON.parse(saveRequest[1].body).marks;
+  expect(savedMarks['English Reading']).toBe(80);
+  expect(savedMarks['English Rhymes']).toBe('');
+  expect(savedMarks.Drawing).toBe('');
+  await userEvent.click(screen.getByRole('button', { name: /^reports$/i }));
+  expect((await screen.findAllByText('80.00 / 100')).length).toBeGreaterThan(0);
+  expect(screen.getAllByText('80.00%').length).toBeGreaterThan(0);
+  expect(screen.getByText('MARKS ENTERED').nextElementSibling).toHaveTextContent('1 / 15');
 }, 20000);
 
 test('filters students by class and search, edits a record, and opens growth comparison', async () => {

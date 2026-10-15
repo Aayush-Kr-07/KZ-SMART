@@ -312,15 +312,20 @@ app.post('/api/students/:studentId/report/send', requireStaff, async (req, res, 
       ...(SMTP_USER && SMTP_PASS ? { auth: { user: SMTP_USER, pass: SMTP_PASS } } : {}),
     });
     const portalUrl = new URL('/#guardian', process.env.FRONTEND_ORIGIN || 'http://localhost:3000').href;
-    const markRows = resultMarkSubjects.map((subject) => `<tr><td>${escapeHtml(subject)}</td><td>${escapeHtml(student.resultMarks[subject])} / 100</td></tr>`).join('');
+    const enteredMarkCount = resultMarkSubjects.filter((subject) => student.resultMarks[subject] !== '' && student.resultMarks[subject] !== null && student.resultMarks[subject] !== undefined).length;
+    const maximumMarks = enteredMarkCount * 100;
+    const markRows = resultMarkSubjects.map((subject) => {
+      const mark = student.resultMarks[subject];
+      return `<tr><td>${escapeHtml(subject)}</td><td>${mark === '' || mark === null || mark === undefined ? '' : `${escapeHtml(mark)} / 100`}</td></tr>`;
+    }).join('');
     const gradeRows = resultGradeSubjects.map((subject) => `<tr><td>${escapeHtml(subject)}</td><td>${escapeHtml(student.resultGrades[subject])}</td></tr>`).join('');
     const details = `${escapeHtml(student.name)} (${escapeHtml(student.studentCode)}) · ${escapeHtml(student.className)}`;
     await transporter.sendMail({
       from: SMTP_FROM,
       to: student.parent,
       subject: `${student.name}'s report card from ${student.schoolName}`,
-      text: `${student.name}'s ${student.examName} result is ready.\nStudent ID: ${student.studentCode}\nClass: ${student.className}\nTotal: ${student.resultTotal} / 1500\nPercentage: ${student.resultPercentage}%\n\nOpen the guardian portal: ${portalUrl}\nSign in with student ID: ${student.studentCode}`,
-      html: `<main style="font-family:Arial,sans-serif;color:#263b30;max-width:680px;margin:auto"><p>${escapeHtml(student.schoolName)}</p><h1 style="font-size:22px">${escapeHtml(student.examName)} report card</h1><p>${details}</p><p>Guardian: ${escapeHtml(student.fatherName || student.motherName || 'Family')}</p><h2>Result summary</h2><p><strong>${escapeHtml(student.resultTotal)} / 1500</strong> · <strong>${escapeHtml(student.resultPercentage)}%</strong></p><h2>Subject marks</h2><table style="width:100%;border-collapse:collapse">${markRows}</table><h2>Development and conduct</h2><table style="width:100%;border-collapse:collapse">${gradeRows}</table><p style="margin-top:24px"><a href="${escapeHtml(portalUrl)}">Open guardian portal</a> and enter student ID <strong>${escapeHtml(student.studentCode)}</strong>.</p></main>`,
+      text: `${student.name}'s ${student.examName} result is ready.\nStudent ID: ${student.studentCode}\nClass: ${student.className}\nTotal: ${student.resultTotal} / ${maximumMarks}\nPercentage: ${student.resultPercentage}%\n\nOpen the guardian portal: ${portalUrl}\nSign in with student ID: ${student.studentCode}`,
+      html: `<main style="font-family:Arial,sans-serif;color:#263b30;max-width:680px;margin:auto"><p>${escapeHtml(student.schoolName)}</p><h1 style="font-size:22px">${escapeHtml(student.examName)} report card</h1><p>${details}</p><p>Guardian: ${escapeHtml(student.fatherName || student.motherName || 'Family')}</p><h2>Result summary</h2><p><strong>${escapeHtml(student.resultTotal)} / ${maximumMarks}</strong> · <strong>${escapeHtml(student.resultPercentage)}%</strong></p><h2>Subject marks</h2><table style="width:100%;border-collapse:collapse">${markRows}</table><h2>Development and conduct</h2><table style="width:100%;border-collapse:collapse">${gradeRows}</table><p style="margin-top:24px"><a href="${escapeHtml(portalUrl)}">Open guardian portal</a> and enter student ID <strong>${escapeHtml(student.studentCode)}</strong>.</p></main>`,
     });
     res.json({ sent: true, email: student.parent });
   } catch (error) {
@@ -460,16 +465,25 @@ app.put('/api/students/:studentId/result', requireStaff, async (req, res, next) 
   const fatherName = typeof req.body.fatherName === 'string' ? req.body.fatherName.trim() : '';
   const motherName = typeof req.body.motherName === 'string' ? req.body.motherName.trim() : '';
   if (fatherName.length > 160 || motherName.length > 160) return res.status(400).json({ error: 'Parent names must be 160 characters or fewer.' });
-  if (!marks || resultMarkSubjects.some((subject) => marks[subject] === '' || marks[subject] === null || !Number.isFinite(Number(marks[subject])) || Number(marks[subject]) < 0 || Number(marks[subject]) > 100)) {
-    return res.status(400).json({ error: 'Enter a mark from 0 to 100 for every English, Hindi, and other subject.' });
+  if (!marks || typeof marks !== 'object' || Array.isArray(marks)) {
+    return res.status(400).json({ error: 'Enter marks for at least one subject.' });
+  }
+  const enteredMarkSubjects = resultMarkSubjects.filter((subject) => marks[subject] !== '' && marks[subject] !== null && marks[subject] !== undefined);
+  const invalidMark = enteredMarkSubjects.some((subject) => {
+    const rawMark = marks[subject];
+    const mark = typeof rawMark === 'string' && !rawMark.trim() ? NaN : Number(rawMark);
+    return !Number.isFinite(mark) || mark < 0 || mark > 100;
+  });
+  if (!enteredMarkSubjects.length || invalidMark) {
+    return res.status(400).json({ error: 'Enter a mark from 0 to 100 for at least one subject. Leave other subjects blank.' });
   }
   if (!grades || resultGradeSubjects.some((subject) => !resultGrades.has(grades[subject]))) {
     return res.status(400).json({ error: 'Choose a grade for every co-scholastic and discipline area.' });
   }
-  const normalizedMarks = Object.fromEntries(resultMarkSubjects.map((subject) => [subject, Number(marks[subject])]));
+  const normalizedMarks = Object.fromEntries(resultMarkSubjects.map((subject) => [subject, marks[subject] === '' || marks[subject] === null || marks[subject] === undefined ? '' : Number(marks[subject])]));
   const normalizedGrades = Object.fromEntries(resultGradeSubjects.map((subject) => [subject, grades[subject]]));
-  const totalMarks = resultMarkSubjects.reduce((total, subject) => total + normalizedMarks[subject], 0);
-  const percentage = Math.round((totalMarks / (resultMarkSubjects.length * 100)) * 10000) / 100;
+  const totalMarks = enteredMarkSubjects.reduce((total, subject) => total + normalizedMarks[subject], 0);
+  const percentage = Math.round((totalMarks / (enteredMarkSubjects.length * 100)) * 10000) / 100;
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
